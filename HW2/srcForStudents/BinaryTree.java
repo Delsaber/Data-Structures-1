@@ -112,27 +112,30 @@ public class BinaryTree<T>{
 
 		String stringRep = "";
 		Queue<BinaryNode<T>> queue = new LinkedList<BinaryNode<T>>();
-		if(root != null){
+		
 			queue.add(root);
-			stringRep = stringRep + "x";
-		}
+		
 
-
-		while(!queue.isEmpty()){
-			BinaryNode<T> tempNode = queue.poll();
-
-			if (tempNode.leftNode != null){
-				queue.add(tempNode.leftNode);
+		BinaryNode<T> emptyNode = new BinaryNode<T>(null);
+		for(int i = 1; i < Math.pow(2,(root.height()+1)); i++){
+			BinaryNode<T> pollNode = queue.poll();
+			
+			if (pollNode.getData() != emptyNode.getData()){
 				stringRep = stringRep + "x";
-			}else{
+			} else {
 				stringRep = stringRep + " ";
 			}
-
-			if(tempNode.rightNode != null){
-				queue.add(tempNode.rightNode);
-				stringRep = stringRep + "x";
+			
+			if (pollNode.leftNode != null){
+				queue.add(pollNode.leftNode);
 			}else{
-				stringRep = stringRep + " ";
+				queue.add(emptyNode);
+			}
+
+			if(pollNode.rightNode != null){
+				queue.add(pollNode.rightNode);
+			}else{
+				queue.add(emptyNode);
 			}
 
 		}
@@ -140,18 +143,23 @@ public class BinaryTree<T>{
 		System.out.println(stringRep);
 
 		int i = 0;
+		int potentialWidth;
 		int width = 0;
 		int maxWidth = 0;
-
+		String substr = "";
+		
 		while (!stringRep.isEmpty()){
-
-			if (stringRep.length() < Math.pow(2, i));
-
-			String substring = stringRep.substring(0, 2 ^ i);
-			stringRep = stringRep.substring(2 ^ i, stringRep.length() + 1);
-			substring = substring.trim();
-
-			width = substring.length();
+			potentialWidth = (int)Math.pow(2,i);
+			if (stringRep.length() > Math.pow(2, i)){
+				substr = stringRep.substring(0, (potentialWidth));
+				stringRep = stringRep.substring((potentialWidth), stringRep.length());
+			} else {
+				substr = stringRep;
+				stringRep = "";
+			}
+			substr = substr.trim();
+			System.out.println(substr);
+			width = substr.length();
 
 			if (maxWidth < width){
 				maxWidth = width;
@@ -159,7 +167,7 @@ public class BinaryTree<T>{
 
 			i++;
 		}
-
+		System.out.println(maxWidth);
 		return maxWidth;
 
 
