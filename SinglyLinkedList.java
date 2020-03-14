@@ -1,18 +1,21 @@
+import java.util.*;
+
 /**
 * HW5
 * class LinkedList Which is a reimplementation of Java's LinkedList class
 * inner class Node Which is a reimplementation of Java's Node class
 * inner class Iterator Which is a reimplementation of Java's Iterator class
-* @author Ricardo Garay
-* @version November 19, 2019
+
+* @author Ricardo Garay, Luis Cenci Ribeiro 
+* @version February 14, 2020 
 */
 
-public class SinglyLinkedList<T> {
+public class SinglyLinkedList<T> implements Iterable<T> {
 
 	private String listName;
 	private Node head;
 	private Node tail;
-    private int size;
+	private int size;
 	
 	public SinglyLinkedList(String listName) {
 		this.listName = listName;
@@ -25,10 +28,11 @@ public class SinglyLinkedList<T> {
     * Add method which will add a node to the end of the LinkedList
     * @param    T               element
     * @custom.require       Element must be the same type as the LinkedList
-    */    
+    */
+
     public void add(T element) {
 
-        Node node = new Node(element);
+        Node node = new Node (element);
 
         if (size == 0) {
             this.head = node;
@@ -36,9 +40,11 @@ public class SinglyLinkedList<T> {
             
         }
         else {
+             
             this.tail.setNextNode(node);
             this.tail = node;
         }
+
         size++;
     }
 
@@ -98,7 +104,8 @@ public class SinglyLinkedList<T> {
 			while(current != null && current.data != element) {
 				current = current.next;
 				counter++;
-			}
+            }
+            
 			//If element was found, then it is at the current node.  Remove it.
 			if (current != null) {
 				current = this.head;
@@ -108,10 +115,13 @@ public class SinglyLinkedList<T> {
 				current.next = current.next.next;
 				this.size--;
 				return;
-			}
+            }
+
 			//If element was not found.
-			if (current == null)
-			throw new NoSuchElementException("Element not found.");
+			if (current == null){
+                throw new NoSuchElementException("Element not found.");
+            }
+
 		} 		
 	}
 	
@@ -137,43 +147,57 @@ public class SinglyLinkedList<T> {
     }
 	
 	public T getNthFromFirst(int n) {
-		if (n > this.size){
-			throw new IndexOutofBoundsException("Index too large");
+		if (n > this.size - 1){
+			throw new IndexOutOfBoundsException("Index too large");
 		}
 		
         int counter = 0;
         Node current = this.head;
         while (current != null ) {
-            if (counter == n)
+            if (counter == n){
                 return current.getData();
+            }
+
             current = current.getNextNode();
             counter++;
         }
+
+        return null;
     }
 	
-	public T getNthFromLast(int n) {
-		if (n > this.size){
-			throw new IndexOutofBoundsException("Index too large");
-		}
+	
+    public T getNthFromLast(int n) { 
+	
+	if (n > this.size - 1){ 
+		throw new IndexOutOfBoundsException("Index too large");
+	}
         int counter = 0;
-		int nFromFirst = this.size - n;
+	int nFromFirst = this.size - n;
 		
         Node current = this.head;
         while (current != null ) {
-            if (counter == nFromFirst)
+            if (counter == nFromFirst){
                 return current.getData();
+            }
             current = current.getNextNode();
             counter++;
         }
+
+        return null;
     }
 
 	/**
     * GetIterator method which will return an iterator for the list calling this method.
     * @return   Iterator<T>     Iterator<T>(this)
     *
-    public Iterator getIterator() {
-        return new Iterator(this);
-    }*/
+    */
+    
+    public SinglyLinkedListIterator iterator() {
+
+        SinglyLinkedListIterator newIterator = new SinglyLinkedListIterator(this);
+
+        return newIterator;
+    }
 	
 	@Override
 	public String toString() {
@@ -186,7 +210,9 @@ public class SinglyLinkedList<T> {
         }
 		return list + "\n";
 	}
-	
+    
+    // INNDER CLASS NODE
+
 	class Node {
     
         private T data;
@@ -226,6 +252,48 @@ public class SinglyLinkedList<T> {
         }
     
     }  // end of Node
+
+    class SinglyLinkedListIterator implements Iterator<T>{
+
+
+        SinglyLinkedList<T> list;
+        Node currentNode;
+
+        public SinglyLinkedListIterator (SinglyLinkedList<T> list){
+            this.list = list;
+            currentNode = list.head;
+
+        }
+
+        public boolean hasNext(){
+
+            if (currentNode != null){
+                return true;
+            }
+
+            return false;
+        }
+
+        public T next(){
+
+            if (!this.hasNext()){
+                throw new NoSuchElementException();
+            }
+
+            T data = currentNode.getData();
+            currentNode = currentNode.getNextNode();
+            return data;
+
+        }
+
+        public void remove(){
+
+
+
+            throw new UnsupportedOperationException("Remove operation is not supported by this iterator");
+        }
+
+    }
 
 }
 
