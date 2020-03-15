@@ -140,8 +140,6 @@ public class BinaryTree<T>{
 
 		}
 
-		System.out.println(stringRep);
-
 		int i = 0;
 		int potentialWidth;
 		int width = 0;
@@ -157,8 +155,7 @@ public class BinaryTree<T>{
 				substr = stringRep;
 				stringRep = "";
 			}
-			substr = substr.trim();
-			System.out.println(substr);
+			substr = substr.replace(" ", "");
 			width = substr.length();
 
 			if (maxWidth < width){
@@ -167,7 +164,6 @@ public class BinaryTree<T>{
 
 			i++;
 		}
-		System.out.println(maxWidth);
 		return maxWidth;
 
 
@@ -351,7 +347,7 @@ public class BinaryTree<T>{
 			if(leftNode != null){
 				stringBuffer.append(leftNode.inOrderTraverse());				
 			}
-
+			
 			stringBuffer.append(" " + data);
 
 			if(rightNode != null){
