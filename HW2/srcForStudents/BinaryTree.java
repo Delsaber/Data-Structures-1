@@ -107,9 +107,9 @@ public class BinaryTree<T>{
 		return root.height();
 	}
 
+	//Checks width by counting ALL nodes using the breadth-first traversal algorithm, then dividing that data into
+	//levels based on the depth they are at. Then removing the null nodes and counting the non null nodes to find the width.
 	public int width(){
-
-
 		String stringRep = "";
 		Queue<BinaryNode<T>> queue = new LinkedList<BinaryNode<T>>();
 		
@@ -140,8 +140,6 @@ public class BinaryTree<T>{
 
 		}
 
-		System.out.println(stringRep);
-
 		int i = 0;
 		int potentialWidth;
 		int width = 0;
@@ -157,8 +155,7 @@ public class BinaryTree<T>{
 				substr = stringRep;
 				stringRep = "";
 			}
-			substr = substr.trim();
-			System.out.println(substr);
+			substr = substr.replace(" ", "");
 			width = substr.length();
 
 			if (maxWidth < width){
@@ -167,72 +164,28 @@ public class BinaryTree<T>{
 
 			i++;
 		}
-		System.out.println(maxWidth);
 		return maxWidth;
-
-
-
-
-		// // TODO: Modify this method-body to compute and return the width 
-		// // of the tree.
-
-		// int width = 0;
-		// int tempWidth = 0;
-		// BinaryNode <T> tempLeftRoot = this.root;
-		// BinaryNode <T> tempRightRoot = this.root;
-
-
-		// for (int i = 0; i <= root.height(); i++){
-			
-		// 	tempWidth = 2 ^ i;
-
-		// 	if (tempLeftRoot.leftNode != null && tempRightRoot.rightNode != null){
-				
-		// 		tempLeftRoot = tempLeftRoot.leftNode;
-		// 		tempRightRoot = tempRightRoot.rightNode;
-							
-		// 	}
-
-		// 	else {
-				
-		// 		// return tempWidth;
-		// 		if (tempLeftRoot.rightNode != null && tempLeftRoot.leftNode == null){
-		// 			tempWidth -= 1;	
-		// 		}
-				
-		// 		if (tempRightRoot.leftNode != null && tempRightRoot.rightNode == null){
-		// 			tempWidth -= 1;
-		// 		}
-
-		// 	}
-
-		// 	if (width < tempWidth){
-		// 		width = tempWidth;
-		// 	}
-
-		// 	return width;
-		// }
-
-
-		// System.out.println("Feature not implemented yet, returning 0");
-		// return 0;
 	}
-
+	
+	//This algorithm uses queue to execute breadth first traversal.
+	//It will add the root to the queue and then add its left child and right child,
+	//and do so for all children to produce a "top-down, left-right" traversal.
 	public String breadthFirstTraverse(){
 		Queue<BinaryNode<T>> queue = new LinkedList<BinaryNode<T>>();
 		queue.add(root);
 		String breadthFirst = "";
-
+		BinaryNode<T> pollNode;
+		
 		while(!queue.isEmpty()){
-			BinaryNode<T> tempNode = queue.poll();
-			breadthFirst = breadthFirst + tempNode.data + " "; 
+			pollNode = queue.poll();
+			breadthFirst = breadthFirst + pollNode.data + " "; 
 
-			if (tempNode.leftNode != null){
-				queue.add(tempNode.leftNode);
+			if (pollNode.leftNode != null){
+				queue.add(pollNode.leftNode);
 			}
 
-			if(tempNode.rightNode != null){
-				queue.add(tempNode.rightNode);
+			if(pollNode.rightNode != null){
+				queue.add(pollNode.rightNode);
 			}
 
 		}
@@ -351,7 +304,7 @@ public class BinaryTree<T>{
 			if(leftNode != null){
 				stringBuffer.append(leftNode.inOrderTraverse());				
 			}
-
+			
 			stringBuffer.append(" " + data);
 
 			if(rightNode != null){
